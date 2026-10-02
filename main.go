@@ -3,20 +3,14 @@ package main
 import (
 	"account-management/backend/config"
 	"account-management/backend/database"
-
-	"github.com/gin-gonic/gin"
+	"account-management/backend/routes"
 )
 
 func main() {
 	config.LoadEnv()
 	database.InitDB()
-	router := gin.Default()
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World tes",
-		})
-	})
+	userRoute := routes.UserRoute()
 
-	router.Run(":" + config.GetEnv("APP_PORT", "8080"))
+	userRoute.Run(":" + config.GetEnv("APP_PORT", "8080"))
 }
