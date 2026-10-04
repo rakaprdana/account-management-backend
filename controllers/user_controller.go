@@ -11,9 +11,20 @@ import (
 )
 
 func FindUsers(c *gin.Context) {
+	is_deleted := c.Param("is_deleted")
 	var users []models.User
 
 	database.DB.Find(&users)
+
+	if err := database.DB.First(&users, is_deleted).Error; err != nil {
+		c.JSON(http.StatusNotFound, structs.ErrorResponse{
+			Success: false,
+			Message: "User not found",
+			Errors:  helpers.TranslateErrorMessage(err),
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, structs.SuccessResponse{
 		Success: true,
 		Message: "Lists data users",
@@ -163,18 +174,6 @@ func DeleteUser(c *gin.Context) {
 			Message: "User not found",
 			Errors:  helpers.TranslateErrorMessage(err),
 		})
-		return
-	}
-
-	var req = structs.UserUpdateRequest{}
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusUnprocessableEntity, structs.ErrorResponse{
-			Success: false,
-			Message: "Validation Errors",
-			Errors:  helpers.TranslateErrorMessage(err),
-		})
-
 		return
 	}
 
