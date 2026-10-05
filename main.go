@@ -14,6 +14,7 @@ func main() {
 
 	router := gin.Default()
 
+	config.SetupCORS()
 	routes.AuthRoute(router)
 	routes.UserRoute(router)
 
