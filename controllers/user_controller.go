@@ -77,8 +77,6 @@ func FindUserById(c *gin.Context) {
 	id := c.Param("id")
 	var user models.User
 
-	database.DB.Find(&user)
-
 	if err := database.DB.First(&user, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, structs.ErrorResponse{
 			Success: false,
