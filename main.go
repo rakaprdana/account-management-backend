@@ -18,7 +18,7 @@ func main() {
 	routes.AuthRoute(router)
 	routes.UserRoute(router)
 
-	port := config.GetEnv("APP_PORT", "8080")
+	port := config.GetEnv("APP_PORT", "3000")
 	router.Run(":" + port)
 
 }

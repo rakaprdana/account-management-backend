@@ -11,15 +11,12 @@ import (
 )
 
 func FindUsers(c *gin.Context) {
-	is_deleted := c.Param("is_deleted")
 	var users []models.User
 
-	database.DB.Find(&users)
-
-	if err := database.DB.First(&users, is_deleted).Error; err != nil {
-		c.JSON(http.StatusNotFound, structs.ErrorResponse{
+	if err := database.DB.Where("is_deleted = ?", false).Find(&users).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, structs.ErrorResponse{
 			Success: false,
-			Message: "User not found",
+			Message: "Failed to fetch users",
 			Errors:  helpers.TranslateErrorMessage(err),
 		})
 		return

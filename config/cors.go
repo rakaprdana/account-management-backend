@@ -8,10 +8,12 @@ import (
 func SetupCORS() gin.HandlerFunc {
 
 	return cors.New(cors.Config{
-		AllowOrigins:  []string{"*"}, // Ganti dengan domain spesifik frontend-mu saat production
+		AllowOrigins:  []string{"http://localhost:5173"}, // Ganti dengan domain spesifik frontend-mu saat production
 		AllowMethods:  []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:  []string{"Origin", "Content-Type", "Authorization", "Accept"},
 		ExposeHeaders: []string{"Content-Length"},
+
+		AllowCredentials: true,
 	})
 
 }
